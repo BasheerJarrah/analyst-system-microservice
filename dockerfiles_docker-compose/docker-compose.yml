@@ -1,0 +1,58 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:6.0.3
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+  mydb2:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: mydb
+      MYSQL_DATABASE: mydata
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  collect-spring-app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mydb2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mydb2:3306/mydata
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: mydb
+
+  authentication:
+    build: ../login
+    ports:
+      - "8081:8081"
+
+  info-spring-app:
+    build: ../info
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongo
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/mydata
+
+  analysis:
+    build: ../analysis
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mydb2
+      - mongo
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mydb2:3306/mydata
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: mydb
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/mydata
+
+volumes:
+  mysql-data:
+  mongodb-data:

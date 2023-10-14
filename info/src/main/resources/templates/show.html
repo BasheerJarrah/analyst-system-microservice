@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Analysis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Hello from docker</h1>
+    <h3>Analyzed data</h3>
+    <br />
+    <div th:each="ana : ${analyst}">
+        <p th:text="'Average: ' + ${ana.average}"></p>
+        <p th:text="'Maximum: ' + ${ana.minimum}"></p>
+        <p th:text="'Minimum: ' + ${ana.maximum}"></p>
+    </div>
+
+    <br />
+    <hr />
+    <form th:action="@{/logout}" method="get">
+        <input type="submit" value="logout">
+    </form>
+
+</body>
+</html>

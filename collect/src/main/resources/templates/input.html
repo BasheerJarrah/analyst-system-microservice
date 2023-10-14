@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>input</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Hello from docker</h1>
+    <form th:action="@{/new}" method="post">
+        <label for="val" >Enter numeric value :</label>
+        <input type="number" step="any" name="val" id="val">
+        <br>
+        <input type="submit" value="add">
+    </form>
+    <h1>List of Names</h1>
+    <h3 th:text="${response}"></h3>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dat, No : ${allData}">
+            <td th:text="${No.count}"></td>
+            <td th:text="${dat.val}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br />
+    <hr/>
+    <form th:action="@{/logout}" method="get">
+        <input type="submit" value="logout">
+    </form>
+</body>
+</html>
